@@ -6,7 +6,9 @@
       v-for="tag in tags"
       :closable="tag.name !== 'home'"
       :disable-transitions="false"
+      @click="changeMenu(tag)"
       @close="handleClose(tag)"
+      :effect="$route.name === tag.name ? 'dark' : 'plain'"
       >{{ tag.label }}</el-tag
     >
   </div>
@@ -32,6 +34,10 @@ export default {
     }),
     handleClose(tag) {
       this.close(tag);
+    },
+    changeMenu(item) {
+      this.$router.push({name : item.name});
+      this.$store.commit("selectMenu",item)
     }
   }
 };
@@ -42,6 +48,7 @@ export default {
   padding: 20px;
   .el-tag {
     margin-right: 15px;
+    cursor: pointer;
   }
 }
 </style>

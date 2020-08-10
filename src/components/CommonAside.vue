@@ -5,6 +5,7 @@
     background-color="#545c64"
     text-color="#fff"
     active-text-color="#ffd04b"
+    :collapse="isCollage"
   >
     <el-menu-item
       :index="item.path"
@@ -46,6 +47,9 @@ export default {
     },
     hasChildren() {
       return this.asideMenu.filter(item => item.children);
+    },
+    isCollage() {
+      return this.$store.state.tab.isCollapse
     }
   },
   data() {
@@ -55,13 +59,13 @@ export default {
           path: "/",
           name: "home",
           label: "首页",
-          icon: "home"
+          icon: "s-home"
         },
         {
           path: "/video",
           name: "video",
           label: "视频管理",
-          icon: "video-paly"
+          icon: "video-play"
         },
         {
           path: "/user",
@@ -93,6 +97,7 @@ export default {
   },
   methods: {
     clickMenu(item) {
+      this.$router.push({ name: item.name });
       this.$store.commit("selectMenu", item);
     }
   }
@@ -104,4 +109,8 @@ export default {
   height: 100%;
   border: 0;
 }
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
+  }
 </style>
