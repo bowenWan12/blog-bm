@@ -5,9 +5,8 @@
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item :to="current.path" v-if="current">
-          {{current.label}}
+          {{ current.label }}
         </el-breadcrumb-item>
-       
       </el-breadcrumb>
     </div>
     <div class="r-content">
@@ -28,7 +27,7 @@
 import { mapState } from "vuex";
 export default {
   computed: {
-     ...mapState({
+    ...mapState({
       current: state => state.tab.currentMenu
     })
   },
@@ -69,11 +68,10 @@ header {
 }
 
 .el-breadcrumb__item {
-  &:last-child{
+  &:last-child {
     .el-breadcrumb__inner {
       color: #f4f4f4;
     }
   }
 }
-  
 </style>

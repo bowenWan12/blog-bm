@@ -16,6 +16,14 @@ module.exports = {
   //     }
   //   ]
   // },
+  rules: {
+    "generator-star-spacing": "off",
+    "no-tabs": "off",
+    "no-unused-vars": "off",
+    "no-console": "off",
+    "no-irregular-whitespace": "off",
+    "no-debugger": "off"
+  },
   parserOptions: {
     parser: "babel-eslint"
   }
