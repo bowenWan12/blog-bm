@@ -5,33 +5,33 @@ export default {
     isCollapse: false,
     tabList: [
       {
-        path: "/",
-        name: "home",
-        label: "首页",
-        icon: "home"
+        path: '/',
+        name: 'home',
+        label: '首页',
+        icon: 'home'
       }
     ]
   },
   mutations: {
     selectMenu(state, val) {
-      if (val.name !== "home") {
-        state.currentMenu = val;
-        let result = state.tabList.findIndex(item => item.name === val.name);
-        result === -1 ? state.tabList.push(val) : "";
+      if (val.name !== 'home') {
+        state.currentMenu = val
+        let result = state.tabList.findIndex(item => item.name === val.name)
+        result === -1 ? state.tabList.push(val) : ''
       } else {
-        state.currentMenu = null;
+        state.currentMenu = null
       }
       // val.name === "home"
       //   ? (state.currentMenu = null)
       //   : (state.currentMenu = val);
     },
     closeTab(state, val) {
-      let result = state.tabList.findIndex(item => item.name === val.name);
-      state.tabList.splice(result, 1);
+      let result = state.tabList.findIndex(item => item.name === val.name)
+      state.tabList.splice(result, 1)
     },
     collapseMenu(state) {
-      state.isCollapse = !state.isCollapse;
+      state.isCollapse = !state.isCollapse
     }
   },
   actions: {}
-};
+}

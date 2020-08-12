@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 export default {
   computed: {
     ...mapState({
@@ -33,15 +33,15 @@ export default {
   },
   data() {
     return {
-      userImage: require("../assets/image/user.png")
-    };
+      userImage: require('../assets/image/user.png')
+    }
   },
   methods: {
     collapseMenu() {
-      this.$store.commit("collapseMenu")
+      this.$store.commit('collapseMenu')
+    }
   }
-  }
-};
+}
 </script>
 
 <style lang="scss" scoped>

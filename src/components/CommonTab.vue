@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations } from 'vuex'
 export default {
   computed: {
     ...mapState({
@@ -25,22 +25,22 @@ export default {
   data() {
     return {
       inputVisible: false,
-      inputValue: ""
-    };
+      inputValue: ''
+    }
   },
   methods: {
     ...mapMutations({
-      close: "closeTab"
+      close: 'closeTab'
     }),
     handleClose(tag) {
-      this.close(tag);
+      this.close(tag)
     },
     changeMenu(item) {
-      this.$router.push({name : item.name});
-      this.$store.commit("selectMenu",item)
+      this.$router.push({ name: item.name })
+      this.$store.commit('selectMenu', item)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

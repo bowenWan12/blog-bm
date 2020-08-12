@@ -12,16 +12,16 @@
 </template>
 
 <script>
-import CommonHeader from "../components/CommonHeader";
-import CommonAside from "../components/CommonAside";
-import CommonTab from "../components/CommonTab";
+import CommonHeader from '../components/CommonHeader'
+import CommonAside from '../components/CommonAside'
+import CommonTab from '../components/CommonTab'
 export default {
   components: {
     CommonHeader,
     CommonAside,
     CommonTab
   }
-};
+}
 </script>
 
 <style lang="postcss" scoped>

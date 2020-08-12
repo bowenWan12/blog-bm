@@ -1,9 +1,9 @@
-import Mock from "mockjs";
-import homeApi from "./home"
+import Mock from 'mockjs'
+import homeApi from './home'
 
 //设置延时
 Mock.setup({
-    timeout: "200-2000"
+  timeout: '200-2000'
 })
 
 //首页相关
