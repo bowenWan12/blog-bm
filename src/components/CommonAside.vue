@@ -7,6 +7,8 @@
     active-text-color="#ffd04b"
     :collapse="isCollage"
   >
+    <h3 v-show="!isCollage">小轩窗后台管理系统</h3>
+    <h3 v-show="isCollage">小轩窗</h3>
     <el-menu-item
       :index="item.path"
       v-for="item in noChildren"
@@ -108,6 +110,11 @@ export default {
 .el-menu {
   height: 100%;
   border: 0;
+  h3 {
+    color: #fff;
+    text-align: center;
+    line-height: 48px;
+  }
 }
 .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
