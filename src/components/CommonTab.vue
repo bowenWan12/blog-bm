@@ -9,8 +9,8 @@
       @click="changeMenu(tag)"
       @close="handleClose(tag)"
       :effect="$route.name === tag.name ? 'dark' : 'plain'"
-      >{{ tag.label }}</el-tag
-    >
+      >{{ tag.label }}
+    </el-tag>
   </div>
 </template>
 
