@@ -117,7 +117,7 @@ export default {
   methods: {
     getTableData() {
       this.$http.get('/home/getStatisticalData').then(res => {
-        res = res.data
+        // res = res.data
         this.tableData = res.data.tableData
         console.log(res.data)
         //订单折线图

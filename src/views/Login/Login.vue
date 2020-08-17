@@ -27,17 +27,25 @@ export default {
   methods: {
     login() {
       this.$http.post('api/permission/getMenu', this.form).then(res => {
-        res = res.data
+        console.log(res)
+        // res = res.data
         if (res.code === 20000) {
+          console.log("succ")
           this.$store.commit('clearMenu')
           this.$store.commit('setMenu', res.data.menu)
           this.$store.commit('setToken', res.data.token)
           this.$store.commit('addMenu', this.$router)
           this.$router.push({ name: 'home' })
         } else {
+          console.log("fail")
           this.$message.warning(res.data.message)
         }
-      })
+      }).catch((error) => {
+         console.log("error")
+          if (error !== 'error') {
+            this.$message({message: error, type: 'error', showClose: true});
+          }
+        })
     }
   }
 }
