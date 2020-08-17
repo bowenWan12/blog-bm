@@ -1,11 +1,11 @@
 export function getToken() {
-  return localStorage.token
+  return localStorage.token;
 }
 
 export function setToken(token) {
-  return localStorage.token = token
+  return (localStorage.token = token);
 }
 
 export function removeToken() {
-  return localStorage.removeItem('token')
+  return localStorage.removeItem("token");
 }

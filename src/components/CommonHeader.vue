@@ -1,7 +1,13 @@
 <template>
   <header>
     <div class="l-content">
-      <el-button plain type="primary" icon="el-icon-menu" size="mini" @click="collapseMenu"></el-button>
+      <el-button
+        plain
+        type="primary"
+        icon="el-icon-menu"
+        size="mini"
+        @click="collapseMenu"
+      ></el-button>
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item :to="current.path" v-if="current">
@@ -16,7 +22,9 @@
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item icon="el-icon-plus">个人中心</el-dropdown-item>
-          <el-dropdown-item icon="el-icon-circle-plus" @click.native="logOut">退出</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-circle-plus" @click.native="logOut"
+            >退出</el-dropdown-item
+          >
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -24,7 +32,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 export default {
   computed: {
     ...mapState({
@@ -33,20 +41,20 @@ export default {
   },
   data() {
     return {
-      userImage: require('../assets/image/user.png')
-    }
+      userImage: require("../assets/image/user.png")
+    };
   },
   methods: {
     collapseMenu() {
-      this.$store.commit('collapseMenu')
+      this.$store.commit("collapseMenu");
     },
     logOut() {
-      this.$store.commit('clearToken')
-      this.$store.commit('clearMenu')
-      location.reload()
+      this.$store.commit("clearToken");
+      this.$store.commit("clearMenu");
+      location.reload();
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

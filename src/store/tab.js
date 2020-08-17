@@ -1,4 +1,4 @@
-import Cookie from 'js-cookie'
+import Cookie from "js-cookie";
 export default {
   state: {
     menu: [],
@@ -6,79 +6,79 @@ export default {
     isCollapse: false,
     tabList: [
       {
-        path: '/',
-        name: 'home',
-        label: '首页',
-        icon: 'home'
+        path: "/",
+        name: "home",
+        label: "首页",
+        icon: "home"
       }
     ]
   },
   mutations: {
     setMenu(state, val) {
-      state.menu = val
-      Cookie.set('menu', JSON.stringify(val))
+      state.menu = val;
+      Cookie.set("menu", JSON.stringify(val));
     },
     clearMenu(state) {
-      state.menu = []
-      Cookie.remove('menu')
+      state.menu = [];
+      Cookie.remove("menu");
     },
     addMenu(state, router) {
-      if (!Cookie.get('menu')) {
-        return
+      if (!Cookie.get("menu")) {
+        return;
       }
-      let menu = JSON.parse(Cookie.get('menu'))
+      let menu = JSON.parse(Cookie.get("menu"));
       // if (!menu) {
       //   return
       // }
-      state.menu = menu
+      state.menu = menu;
       let currentMenu = [
         {
-          path: '/',
-          component: () => import('@/views/Main'),
+          path: "/",
+          component: () => import("@/views/Main"),
           children: []
         }
-      ]
+      ];
       menu.forEach(item => {
         if (item.children) {
           item.children = item.children.map(item => {
-            item.component = () => import(`@/views/${item.url}`)
-            return item
-          })
-          currentMenu[0].children.push(...item.children)
+            item.component = () => import(`@/views/${item.url}`);
+            return item;
+          });
+          currentMenu[0].children.push(...item.children);
         } else {
-          item.component = () => import(`@/views/${item.url}`)
-          currentMenu[0].children.push(item)
+          item.component = () => import(`@/views/${item.url}`);
+          currentMenu[0].children.push(item);
         }
-      })
+      });
       // console.log(currentMenu, 'curr')
-      router.addRoutes(currentMenu)
+      router.addRoutes(currentMenu);
     },
     selectMenu(state, val) {
-      if (val.name !== 'home') {
-        state.currentMenu = val
-        let result = state.tabList.findIndex(item => item.name === val.name)
-        result === -1 ? state.tabList.push(val) : ''
+      if (val.name !== "home") {
+        state.currentMenu = val;
+        let result = state.tabList.findIndex(item => item.name === val.name);
+        result === -1 ? state.tabList.push(val) : "";
       } else {
-        state.currentMenu = null
+        state.currentMenu = null;
       }
       // val.name === "home"
       //   ? (state.currentMenu = null)
       //   : (state.currentMenu = val);
     },
     getMenu(state) {
-      if (Cookie.get('tagList')) {
+      if (Cookie.get("tagList")) {
         // console.log('haha')
-        let tagList = JSON.parse(Cookie.get('tagList'))
-        state.tabsList = tagList
+        let tagList = JSON.parse(Cookie.get("tagList"));
+        state.tabsList = tagList;
       }
     },
     closeTab(state, val) {
-      let result = state.tabList.findIndex(item => item.name === val.name)
-      state.tabList.splice(result, 1)
+      let result = state.tabList.findIndex(item => item.name === val.name);
+      state.tabList.splice(result, 1);
     },
     collapseMenu(state) {
-      state.isCollapse = !state.isCollapse
+      state.isCollapse = !state.isCollapse;
     }
   },
   actions: {}
-}
+};
