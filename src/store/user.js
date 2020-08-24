@@ -1,5 +1,5 @@
 import Cookie from "js-cookie";
-import { getToken, setToken, removeToken } from "@/api/token";
+import { getToken, setToken, removeToken } from "@/request/token";
 import Vue from "vue";
 export default {
   state: {

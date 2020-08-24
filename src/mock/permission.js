@@ -51,6 +51,26 @@ export default {
                     url: "Other/PageTwo"
                   }
                 ]
+              },
+              {
+                label: "博客管理页",
+                icon: "folder",
+                children: [
+                  {
+                    path: "/BlogView",
+                    name: "BlogView",
+                    label: "博客浏览",
+                    icon: "document-checked",
+                    url: "Blog/BlogView"
+                  },
+                  {
+                    path: "/BlogWrite",
+                    name: "BlogWrite",
+                    label: "写博客",
+                    icon: "document",
+                    url: "Blog/BlogWrite"
+                  }
+                ]
               }
             ],
             token: Mock.Random.guid(),
@@ -83,7 +103,7 @@ export default {
         };
       } else {
         return {
-          code: -999,
+          code: 2999,
           data: {
             message: "密码错误"
           }

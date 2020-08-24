@@ -6,8 +6,8 @@ import "./assets/scss/reset.scss";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 
-import http from "@/api/config";
-import "./mock";
+import http from "@/request/config";
+// import "./mock";
 
 Vue.use(ElementUI);
 Vue.prototype.$http = http;
@@ -22,6 +22,7 @@ router.beforeEach((to, from, next) => {
   let token = store.state.user.token;
   // 过滤登录页，防止死循环
   if (!token && to.name !== "login") {
+    console.log("..........................")
     next({ name: "login" });
   } else {
     next();

@@ -5,6 +5,7 @@ import store from "@/store";
 //创建axios示例
 const service = axios.create({
   //请求超时时间
+  baseURL: 'http://localhost:80/',
   timeout: 3000
 });
 
@@ -38,7 +39,7 @@ service.interceptors.response.use(
 
     const res = response.data;
     //0 为成功状态
-    if (res.code !== 20000) {
+    if (res.code !== 0) {
       //90001 Session超时
       if (res.code === 90001) {
         return Promise.reject("error");
