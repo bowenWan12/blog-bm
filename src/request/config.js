@@ -3,9 +3,10 @@ import { Message } from "element-ui";
 import store from "@/store";
 
 //创建axios示例
+axios.defaults.withCredentials = true;// 允许跨域携带cookie
 const service = axios.create({
   //请求超时时间
-  baseURL: 'http://localhost:80/',
+  baseURL: 'http://localhost:80/blog/api/',
   timeout: 3000
 });
 
@@ -67,6 +68,17 @@ service.interceptors.response.use(
           message: "你没有权限访问哦"
         });
         return Promise.reject("error");
+      }
+
+      //1 校验失败
+      if (res.code === 1) {
+        console.info(res.data);
+        Message({
+          type: "warning",
+          showClose: true,
+          message: res.data
+        });
+        return Promise.reject(res.data);
       }
 
       //999 用户不存在

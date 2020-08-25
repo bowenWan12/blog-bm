@@ -4,7 +4,7 @@ module.exports = {
     open: true,
     proxy: {
     	'/': {
-        target: 'http://localhost:80',
+        target: 'http://localhost:80/blog/api/',
         // pathRewrite: {
         //   '^/': ''
         // }

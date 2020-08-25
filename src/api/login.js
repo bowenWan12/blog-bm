@@ -1,6 +1,6 @@
 import request from '@/request/config.js'
 
-export function login(account, password) {
+export function login(username, password, verifycode, rememberMe) {
   const data = {
     username,
     password,

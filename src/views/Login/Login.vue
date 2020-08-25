@@ -5,7 +5,7 @@
       <el-form
         :model="userForm"
         :rules="rules"
-        ref="login"
+        ref="userForm"
         label-width="0px"
         class="ms-content"
       >
@@ -24,6 +24,11 @@
             <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
           </el-input>
         </el-form-item>
+        <el-form-item  prop="verifycode">
+          <el-input v-model="userForm.verifycode" placeholder="请输入验证码" class="identifyinput">
+            <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
+          </el-input>
+        </el-form-item>
         <el-form-item>
           <div class="identifybox">
             <div @click="refreshCode">
@@ -32,9 +37,11 @@
             <el-button @click="refreshCode" type='text' class="textbtn">看不清，换一张</el-button>
           </div>
         </el-form-item>
-        <el-checkbox v-model="rememberMe">记住账号</el-checkbox>
+        <el-form-item>
+          <el-checkbox v-model="userForm.rememberMe">记住账号</el-checkbox>
+        </el-form-item>
         <div class="login-btn">
-          <el-button type="primary" @click="login()">登录</el-button>
+          <el-button type="primary" @click="login('userForm')">登录</el-button>
         </div>
         <p class="login-tips">Tips : 请输入用户名和密码。</p>
       </el-form>
@@ -43,7 +50,7 @@
 </template>
 <script>
 import CommonIdentify from "../../components/CommonIdentify";
-import { refreshCode } from '@/api/login'
+import { refreshCode,login } from '@/api/login'
 export default {
   components: {
     CommonIdentify,
@@ -54,8 +61,17 @@ export default {
   data() {
     return {
       rules: {
-          username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-          password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+          username: [
+            { required: true, message: '请输入用户名', trigger: 'blur' },
+            { max: 10, message: '不能大于10个字符', trigger: 'blur' }
+          ],
+          password: [
+            { required: true, message: '请输入密码', trigger: 'blur' },
+            { max: 10, message: '不能大于10个字符', trigger: 'blur' }
+          ],
+        verifycode: [
+          { required: true, message: '请输入验证码', trigger: 'blur' }
+        ]
       },
       userForm: {
         username: "",
@@ -63,8 +79,7 @@ export default {
         verifycode: ''
       },
       rememberMe: false,
-      identifyCodes: '1234567890',
-      identifyCode: ''
+      identifyCode: '2134'
     };
   },
   methods: {
@@ -98,7 +113,7 @@ export default {
     refreshCode() {
       let that = this
       refreshCode().then(res => {
-        console.log("------------"+res)
+        console.log(res.data)
         that.identifyCode = res.data
       }).catch(error => {
         if (error !== 'error') {
@@ -108,11 +123,23 @@ export default {
     },
     login(formName) {
       let that = this
-      this.$refs[formName].validate((valid) => {
+      that.$refs[formName].validate((valid) => {
         if (valid) {
-          that.$store.dispatch('login', that.userForm).then(() => {
-            this.$router.push({ name: "home" });
+          login(that.userForm.username,that.userForm.password,that.userForm.verifycode,that.userForm.rememberMe).then(res => {
+            console.log(res)
+            if (res.code === 0) {
+              console.log("succ");
+              that.$store.commit("clearMenu");
+              // this.$store.commit("setMenu", res.data.menu);
+              that.$store.commit("setToken", res.data['Oauth-Token']);
+              // this.$store.commit("addMenu", this.$router);
+              that.$router.push({ name: "home" });
+            }else {
+              console.log("fail");
+              that.$message.warning(res.data.message);
+            }
           }).catch((error) => {
+            console.log(error)
             if (error !== 'error') {
               that.$message({message: error, type: 'error', showClose: true});
             }
