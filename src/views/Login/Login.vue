@@ -126,13 +126,13 @@ export default {
       that.$refs[formName].validate((valid) => {
         if (valid) {
           login(that.userForm.username,that.userForm.password,that.userForm.verifycode,that.userForm.rememberMe).then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.code === 0) {
               console.log("succ");
               that.$store.commit("clearMenu");
-              // this.$store.commit("setMenu", res.data.menu);
+              this.$store.commit("setMenu", res.data.menu);
               that.$store.commit("setToken", res.data['Oauth-Token']);
-              // this.$store.commit("addMenu", this.$router);
+              this.$store.commit("addMenu", this.$router);
               that.$router.push({ name: "home" });
             }else {
               console.log("fail");
