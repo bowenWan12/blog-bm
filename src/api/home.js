@@ -1,8 +1,8 @@
 import request from '@/request/config.js'
 
-export function getmenu() {
+export function getStatisticalData() {
   return request({
-    url: '/main',
+    url: '/home/main',
     method: 'get'
   })
 }

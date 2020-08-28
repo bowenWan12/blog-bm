@@ -39,6 +39,11 @@ service.interceptors.response.use(
     }
 
     const res = response.data;
+
+console.log("-----------------------")
+console.log(res)
+console.log("-----------------------")
+
     //0 为成功状态
     if (res.code !== 0) {
       //90001 Session超时

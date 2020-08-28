@@ -66,6 +66,7 @@
 
 <script>
 import Echart from "../../components/Echart";
+import { getStatisticalData } from '@/api/home'
 export default {
   components: {
     Echart
@@ -135,38 +136,41 @@ export default {
   },
   methods: {
     getTableData() {
-      this.$http.get("/home/getStatisticalData").then(res => {
+      let that = this
+      getStatisticalData().then(res => {
+        console.log(res)
         // res = res.data
-        this.tableData = res.data.tableData;
+        that.tableData = res.data.tableData;
         console.log(res.data);
         //订单折线图
         const orderDates = res.data.orderData;
-        this.echartData.order.xData = orderDates.date;
+        that.echartData.order.xData = orderDates.date;
         // 第一步，取出series中的键名
+        console.log(orderDates.data)
         let keyArray = Object.keys(orderDates.data[0]);
         console.log(keyArray);
         keyArray.forEach(key => {
-          this.echartData.order.series.push({
+          that.echartData.order.series.push({
             name: key === "wechat" ? "小程序" : key,
             data: orderDates.data.map(item => item[key]),
             type: "line"
           });
         });
         // 用户柱状图
-        this.echartData.user.xData = res.data.userData.map(item => item.date);
-        this.echartData.user.series.push({
+        that.echartData.user.xData = res.data.userData.map(item => item.date);
+        that.echartData.user.series.push({
           name: "新增用户",
-          data: res.data.userData.map(item => item.new),
+          data: res.data.userData.map(item => item.newly),
           type: "bar"
         });
-        this.echartData.user.series.push({
+        that.echartData.user.series.push({
           name: "活跃用户",
           data: res.data.userData.map(item => item.active),
           type: "bar",
           barGap: 0
         });
         // 视频饼图
-        this.echartData.video.series.push({
+        that.echartData.video.series.push({
           data: res.data.videoData,
           type: "pie"
         });
