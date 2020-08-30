@@ -66,7 +66,7 @@
 
 <script>
 import Echart from "../../components/Echart";
-import { getStatisticalData } from '@/api/home'
+import { getStatisticalData } from "@/api/home";
 export default {
   components: {
     Echart
@@ -136,9 +136,9 @@ export default {
   },
   methods: {
     getTableData() {
-      let that = this
+      let that = this;
       getStatisticalData().then(res => {
-        console.log(res)
+        console.log(res);
         // res = res.data
         that.tableData = res.data.tableData;
         console.log(res.data);
@@ -146,7 +146,7 @@ export default {
         const orderDates = res.data.orderData;
         that.echartData.order.xData = orderDates.date;
         // 第一步，取出series中的键名
-        console.log(orderDates.data)
+        console.log(orderDates.data);
         let keyArray = Object.keys(orderDates.data[0]);
         console.log(keyArray);
         keyArray.forEach(key => {

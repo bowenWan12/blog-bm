@@ -1,15 +1,15 @@
 <template>
   <div class="block">
     <el-timeline>
-      <el-timeline-item 
-      v-for="(activity, index) in activities"
-      :key="index"
-      :timestamp="activity.timestamp"
-      :icon="activity.icon ? activity.icon : 'el-icon-more'"
-      :type="activity.type ? activity.type : 'primary'"
-      :color="activity.color ? activity.color : '#0bbd87'"
-      :size="activity.size ? activity.size : 'large'"
-      placement="top"
+      <el-timeline-item
+        v-for="(activity, index) in activities"
+        :key="index"
+        :timestamp="activity.timestamp"
+        :icon="activity.icon ? activity.icon : 'el-icon-more'"
+        :type="activity.type ? activity.type : 'primary'"
+        :color="activity.color ? activity.color : '#0bbd87'"
+        :size="activity.size ? activity.size : 'large'"
+        placement="top"
       >
         <el-card>
           <h4>{{ activity.timestamp }}</h4>
@@ -34,11 +34,10 @@
 
 <script>
 export default {
-    props: {
-        activities: Array
-    },
+  props: {
+    activities: Array
+  }
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

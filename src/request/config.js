@@ -3,10 +3,10 @@ import { Message } from "element-ui";
 import store from "@/store";
 
 //创建axios示例
-axios.defaults.withCredentials = true;// 允许跨域携带cookie
+axios.defaults.withCredentials = true; // 允许跨域携带cookie
 const service = axios.create({
   //请求超时时间
-  baseURL: 'http://localhost:80/blog/api/',
+  baseURL: "http://localhost:80/blog/api/",
   timeout: 3000
 });
 
@@ -40,9 +40,9 @@ service.interceptors.response.use(
 
     const res = response.data;
 
-console.log("-----------------------")
-console.log(res)
-console.log("-----------------------")
+    console.log("-----------------------");
+    console.log(res);
+    console.log("-----------------------");
 
     //0 为成功状态
     if (res.code !== 0) {

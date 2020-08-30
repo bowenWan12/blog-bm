@@ -24,8 +24,12 @@
             <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
           </el-input>
         </el-form-item>
-        <el-form-item  prop="verifycode">
-          <el-input v-model="userForm.verifycode" placeholder="请输入验证码" class="identifyinput">
+        <el-form-item prop="verifycode">
+          <el-input
+            v-model="userForm.verifycode"
+            placeholder="请输入验证码"
+            class="identifyinput"
+          >
             <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
           </el-input>
         </el-form-item>
@@ -34,7 +38,9 @@
             <div @click="refreshCode">
               <common-identify :identifyCode="identifyCode"></common-identify>
             </div>
-            <el-button @click="refreshCode" type='text' class="textbtn">看不清，换一张</el-button>
+            <el-button @click="refreshCode" type="text" class="textbtn"
+              >看不清，换一张</el-button
+            >
           </div>
         </el-form-item>
         <el-form-item>
@@ -50,36 +56,36 @@
 </template>
 <script>
 import CommonIdentify from "../../components/CommonIdentify";
-import { refreshCode,login } from '@/api/login'
+import { refreshCode, login } from "@/api/login";
 export default {
   components: {
-    CommonIdentify,
+    CommonIdentify
   },
-  created () {
+  created() {
     this.refreshCode();
   },
   data() {
     return {
       rules: {
-          username: [
-            { required: true, message: '请输入用户名', trigger: 'blur' },
-            { max: 10, message: '不能大于10个字符', trigger: 'blur' }
-          ],
-          password: [
-            { required: true, message: '请输入密码', trigger: 'blur' },
-            { max: 10, message: '不能大于10个字符', trigger: 'blur' }
-          ],
+        username: [
+          { required: true, message: "请输入用户名", trigger: "blur" },
+          { max: 10, message: "不能大于10个字符", trigger: "blur" }
+        ],
+        password: [
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { max: 10, message: "不能大于10个字符", trigger: "blur" }
+        ],
         verifycode: [
-          { required: true, message: '请输入验证码', trigger: 'blur' }
+          { required: true, message: "请输入验证码", trigger: "blur" }
         ]
       },
       userForm: {
         username: "",
         password: "",
-        verifycode: ''
+        verifycode: ""
       },
       rememberMe: false,
-      identifyCode: '2134'
+      identifyCode: "2134"
     };
   },
   methods: {
@@ -108,48 +114,65 @@ export default {
     //       }
     //     });
     // },
-  
+
     // 切换验证码
     refreshCode() {
-      let that = this
-      refreshCode().then(res => {
-        console.log(res.data)
-        that.identifyCode = res.data
-      }).catch(error => {
-        if (error !== 'error') {
-          that.$message({type: 'error', message: '验证码加载失败!', showClose: true})
-        }
-      })
+      let that = this;
+      refreshCode()
+        .then(res => {
+          console.log(res.data);
+          that.identifyCode = res.data;
+        })
+        .catch(error => {
+          if (error !== "error") {
+            that.$message({
+              type: "error",
+              message: "验证码加载失败!",
+              showClose: true
+            });
+          }
+        });
     },
     login(formName) {
-      let that = this
-      that.$refs[formName].validate((valid) => {
+      let that = this;
+      that.$refs[formName].validate(valid => {
         if (valid) {
-          login(that.userForm.username,that.userForm.password,that.userForm.verifycode,that.userForm.rememberMe).then(res => {
-            // console.log(res)
-            if (res.code === 0) {
-              console.log("succ");
-              that.$store.commit("clearMenu");
-              this.$store.commit("setMenu", res.data.menu);
-              that.$store.commit("setToken", res.data['Oauth-Token']);
-              this.$store.commit("addMenu", this.$router);
-              that.$router.push({ name: "home" });
-            }else {
-              console.log("fail");
-              that.$message.warning(res.data.message);
-            }
-          }).catch((error) => {
-            console.log(error)
-            if (error !== 'error') {
-              that.$message({message: error, type: 'error', showClose: true});
-            }
-          })
+          login(
+            that.userForm.username,
+            that.userForm.password,
+            that.userForm.verifycode,
+            that.userForm.rememberMe
+          )
+            .then(res => {
+              // console.log(res)
+              if (res.code === 0) {
+                console.log("succ");
+                that.$store.commit("clearMenu");
+                this.$store.commit("setMenu", res.data.menu);
+                that.$store.commit("setToken", res.data["Oauth-Token"]);
+                this.$store.commit("addMenu", this.$router);
+                that.$router.push({ name: "home" });
+              } else {
+                console.log("fail");
+                that.$message.warning(res.data.message);
+              }
+            })
+            .catch(error => {
+              console.log(error);
+              if (error !== "error") {
+                that.$message({
+                  message: error,
+                  type: "error",
+                  showClose: true
+                });
+              }
+            });
         } else {
           return false;
         }
       });
     }
-  },
+  }
 };
 </script>
 
@@ -190,10 +213,10 @@ export default {
   height: 36px;
   margin-bottom: 10px;
 }
-.identifybox{
+.identifybox {
   display: flex;
   justify-content: space-between;
-  margin-top:7px;
+  margin-top: 7px;
 }
 .login-tips {
   font-size: 12px;

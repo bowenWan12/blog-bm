@@ -22,7 +22,7 @@ router.beforeEach((to, from, next) => {
   let token = store.state.user.token;
   // 过滤登录页，防止死循环
   if (!token && to.name !== "login") {
-    console.log("..........................")
+    console.log("..........................");
     next({ name: "login" });
   } else {
     next();

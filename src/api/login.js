@@ -1,4 +1,4 @@
-import request from '@/request/config.js'
+import request from "@/request/config.js";
 
 export function login(username, password, verifycode, rememberMe) {
   const data = {
@@ -6,18 +6,18 @@ export function login(username, password, verifycode, rememberMe) {
     password,
     rememberMe,
     verifycode
-  }
+  };
   return request({
-    url: '/login/main',
-    method: 'post',
+    url: "/login/main",
+    method: "post",
     data
-  })
+  });
 }
 export function refreshCode() {
   return request({
-    url: '/genCaptcha',
-    method: 'get'
-  })
+    url: "/genCaptcha",
+    method: "get"
+  });
 }
 // export function logout() {
 //   return request({

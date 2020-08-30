@@ -17,6 +17,7 @@ export default {
         removeToken();
         resolve();
       }).catch(error => {
+        // eslint-disable-next-line no-undef
         reject(error);
       });
     },
