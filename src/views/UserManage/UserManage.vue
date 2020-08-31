@@ -12,7 +12,7 @@
     </el-dialog>
     <div class="manage-header">
       <el-button type="primary" @click="addUser">+ 新增</el-button>
-      <common-from inline :formLabel="formLabel" :form="serchFrom">
+      <common-from inline :formLabel="formLabel" :form="searchFrom">
         <el-button type="primary" @click="getList(searchFrom.keyword)"
           >搜索</el-button
         >
@@ -32,6 +32,7 @@
 <script>
 import CommonFrom from "../../components/CommonFrom";
 import CommonTable from "../../components/CommonTable";
+import { getUserList,createUser } from "@/api/user";
 export default {
   components: {
     CommonFrom,
@@ -44,27 +45,29 @@ export default {
       tableData: [],
       tableLabel: [
         {
-          prop: "name",
-          label: "姓名"
+          prop: "loginName",
+          label: "用户名"
         },
         {
-          prop: "age",
-          label: "年龄"
+          prop: "nickName",
+          label: "昵称"
         },
         {
-          prop: "sexLabel",
-          label: "性别",
-          width: "50px"
+          prop: "email",
+          label: "邮箱"
         },
         {
-          prop: "birth",
-          label: "出生日期",
+          prop: "tel",
+          label: "联系方式"
+        },
+        {
+          prop: "locked",
+          label: "状态"
+        },
+        {
+          prop: "createDate",
+          label: "创建时间",
           width: "200px"
-        },
-        {
-          prop: "addr",
-          label: "地址",
-          width: "300px"
         }
       ],
       config: {
@@ -73,52 +76,57 @@ export default {
         loading: false
       },
       operateFrom: {
-        name: "",
-        addr: "",
-        age: "",
-        birth: "",
-        sex: ""
+        loginName: "",
+        nickName: "",
+        role: "",
+        email: "",
+        phone: "",
+        delFlag:""
       },
       operateLabel: [
         {
-          model: "name",
-          label: "姓名"
+          model: "loginName",
+          label: "登录名"
         },
         {
-          model: "age",
-          label: "年龄"
+          model: "nickName",
+          label: "昵称"
         },
         {
-          model: "sex",
-          label: "性别",
-          type: "select",
+          model: "roles",
+          type: "checkbox",
           opts: [
             {
-              label: "男",
-              value: 1
+              label: "老司机",
+              value: "test"
             },
             {
-              label: "女",
-              value: 0
+              label: "系统管理员",
+              value: "admin"
             }
           ]
         },
         {
-          model: "addr",
-          label: "地址"
+          model: "email",
+          label: "邮箱"
         },
         {
-          model: "birth",
-          label: "出生日期",
-          type: "date"
+          model: "phone",
+          label: "手机"
+        },
+        {
+          model: "delFlag",
+          label: "是否启用",
+          type: "switch"
+
         }
       ],
-      serchFrom: {
-        ketword: ""
+      searchFrom: {
+        keyword: ""
       },
       formLabel: [
         {
-          model: "ketword",
+          model: "keyword",
           label: "",
           options: []
         }
@@ -126,28 +134,29 @@ export default {
     };
   },
   methods: {
-    getList(name = "") {
+    getList(name = '') {
       this.config.loading = true;
-      this.$http
-        .get("/api/user/getUser", {
-          params: {
-            page: this.config.page,
-            name
-          }
-        })
-        .then(res => {
-          console.log(res);
-          this.tableData = res.list.map(item => {
-            item.sexLabel = item.sex === 0 ? "女" : "男";
-            return item;
-          });
-          this.config.total = res.count;
-          this.config.loading = false;
+      let that = this;
+      let pageParam = this.config;
+      
+      getUserList(pageParam, name).then(res =>{
+        console.log(res.data.records)
+        that.tableData = res.data.records.map(item => {
+          item.locked = item.locked === false ? "正常" : "停用";
+          return item;
         });
+        this.config.total = res.data.total;
+        this.config.loading = false;
+      }).catch(err => {
+          if (err !== 'err') {
+            that.$message({type: 'error', message: '用户列表加载失败!', showClose: true})
+          }
+        }).finally(() => {
+          this.config.loading = false
+        })
     },
-    // changePage(val) {
-    //   console.log(val)
-    // }
+
+
     addUser() {
       this.operateForm = {};
       this.operateType = "add";
@@ -161,13 +170,15 @@ export default {
     },
     confirm() {
       if (this.operateType === "edit") {
+        console.log("edit----")
         this.$http.post("/api/user/edit", this.operateFrom).then(res => {
           console.log(res.data);
           this.isShow = false;
           this.getList();
         });
       } else {
-        this.$http.post("/api/user/add", this.operateForm).then(res => {
+        console.log("add----")
+        createUser(this.operateFrom).then(res => {
           console.log(res.data);
           this.isShow = false;
           this.getList();

@@ -10,6 +10,9 @@
         :placeholder="'请输入' + item.label"
         v-if="!item.type"
       ></el-input>
+      <el-checkbox-group  v-if="item.type === 'checkbox'">
+        <el-checkbox v-for="op in item.opts" v-model="form[op.value]" :name="op.label" :label="op.label" :key="op"></el-checkbox>
+      </el-checkbox-group>
       <el-select
         v-model="form[item.model]"
         placeholder="请选择"
