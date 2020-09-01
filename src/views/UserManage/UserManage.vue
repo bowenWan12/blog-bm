@@ -93,8 +93,10 @@ export default {
           label: "昵称"
         },
         {
-          model: "roles",
+          model: "role",
           type: "checkbox",
+          checkList: [],
+          label: "角色",
           opts: [
             {
               label: "老司机",
@@ -118,7 +120,6 @@ export default {
           model: "delFlag",
           label: "是否启用",
           type: "switch"
-
         }
       ],
       searchFrom: {

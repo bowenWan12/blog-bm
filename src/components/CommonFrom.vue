@@ -10,8 +10,9 @@
         :placeholder="'请输入' + item.label"
         v-if="!item.type"
       ></el-input>
-      <el-checkbox-group  v-if="item.type === 'checkbox'">
-        <el-checkbox v-for="op in item.opts" v-model="form[op.value]" :name="op.label" :label="op.label" :key="op"></el-checkbox>
+      <el-checkbox-group v-if="item.type === 'checkbox'" v-model="form[item.checkList]" @change="ch(item.checkList)">
+       {{item.label}}
+      <el-checkbox v-for="op in item.opts" :label="op.label" :key="op.value">{{op.label}}</el-checkbox>
       </el-checkbox-group>
       <el-select
         v-model="form[item.model]"
@@ -50,6 +51,11 @@ export default {
     inline: Boolean,
     form: Object,
     formLabel: Array
+  },
+  methods: {
+    ch(l) {
+      console.log(l)
+    }
   }
 };
 </script>
