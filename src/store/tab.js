@@ -2,6 +2,7 @@ import Cookie from "js-cookie";
 export default {
   state: {
     menu: [],
+    role: [],
     currentMenu: null,
     isCollapse: false,
     tabList: [
@@ -17,6 +18,20 @@ export default {
     setMenu(state, val) {
       state.menu = val;
       Cookie.set("menu", JSON.stringify(val));
+    },
+    setUserRole(state, val) {
+      state.role = val;
+      Cookie.set("role", JSON.stringify(val));
+    },
+    clearUserRole(state) {
+      state.role = [];
+      Cookie.remove("role");
+    },
+    getUserRole(state) {
+      if (Cookie.get("role")) {
+        let role = JSON.parse(Cookie.get("role"));
+        state.role = role;
+      }
     },
     clearMenu(state) {
       state.menu = [];

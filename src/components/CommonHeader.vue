@@ -51,6 +51,7 @@ export default {
     logOut() {
       this.$store.commit("clearToken");
       this.$store.commit("clearMenu");
+      this.$store.commit("clearUserRole");
       location.reload();
     }
   }

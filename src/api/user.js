@@ -19,3 +19,11 @@ export function createUser(formdata) {
     data: formdata
   });
 }
+export function editUser(formdata) {
+  return request({
+    // headers: {'Content-Type': 'multipart/form-data'},
+    url: `/admin/system/user/edit`,
+    method: "post",
+    data: formdata
+  });
+}

@@ -149,6 +149,7 @@ export default {
                 console.log("succ");
                 that.$store.commit("clearMenu");
                 this.$store.commit("setMenu", res.data.menu);
+                this.$store.commit("setUserRole", res.data.userRole);
                 that.$store.commit("setToken", res.data["Oauth-Token"]);
                 this.$store.commit("addMenu", this.$router);
                 that.$router.push({ name: "home" });

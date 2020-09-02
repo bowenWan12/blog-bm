@@ -27,22 +27,30 @@
       @del="delUser"
     ></common-table>
   </div>
+
 </template>
 
 <script>
+import { mapState } from "vuex";
 import CommonFrom from "../../components/CommonFrom";
 import CommonTable from "../../components/CommonTable";
-import { getUserList,createUser } from "@/api/user";
+import { getUserList, createUser, editUser } from "@/api/user";
 export default {
   components: {
     CommonFrom,
     CommonTable
+  },
+  computed: {
+    ...mapState({
+      currentRole: state => state.tab.role
+    })
   },
   data() {
     return {
       operateType: "add",
       isShow: false,
       tableData: [],
+      roles: null,
       tableLabel: [
         {
           prop: "loginName",
@@ -78,10 +86,10 @@ export default {
       operateFrom: {
         loginName: "",
         nickName: "",
-        role: "",
+        roles: [],
         email: "",
-        phone: "",
-        delFlag:""
+        tel: "",
+        delFlag:false
       },
       operateLabel: [
         {
@@ -93,18 +101,17 @@ export default {
           label: "昵称"
         },
         {
-          model: "role",
+          model: "roles",
           type: "checkbox",
-          checkList: [],
           label: "角色",
           opts: [
             {
               label: "老司机",
-              value: "test"
+              value: "1"
             },
             {
               label: "系统管理员",
-              value: "admin"
+              value: "2"
             }
           ]
         },
@@ -113,7 +120,7 @@ export default {
           label: "邮箱"
         },
         {
-          model: "phone",
+          model: "tel",
           label: "手机"
         },
         {
@@ -141,7 +148,6 @@ export default {
       let pageParam = this.config;
       
       getUserList(pageParam, name).then(res =>{
-        console.log(res.data.records)
         that.tableData = res.data.records.map(item => {
           item.locked = item.locked === false ? "正常" : "停用";
           return item;
@@ -165,20 +171,53 @@ export default {
     },
     editUser(row) {
       this.operateType = "edit";
-      this.isShow = true;
       this.operateFrom = row;
-      console.log(row);
+
+       // console.log(this.roles)
+      let roleNms=[];
+      this.roles.forEach((item)=>{
+        roleNms.push(item.roleId)
+       
+      })
+      //  console.log(roleNms)
+      this.operateFrom.roles=roleNms;
+      this.operateFrom.locked = this.operateFrom.locked === "正常" ? false : true;
+      console.log(this.operateFrom);
+
+
+      this.isShow = true;
+      
     },
     confirm() {
       if (this.operateType === "edit") {
         console.log("edit----")
-        this.$http.post("/api/user/edit", this.operateFrom).then(res => {
-          console.log(res.data);
+        
+        var newForm ={};
+        var selectRole = [];
+        
+        this.operateFrom.roles.forEach(element => {
+          selectRole.push({"id": element});
+        });
+        newForm = {"roleLists": selectRole}
+        Object.assign(this.operateFrom, newForm)
+
+        editUser(this.operateFrom).then(res => {
+
           this.isShow = false;
           this.getList();
+          this.$store.commit("setUserRole", res.data.userRole);
         });
       } else {
         console.log("add----")
+        var newForm ={};
+        var selectRole = [];
+        
+        this.operateFrom.roles.forEach(element => {
+          selectRole.push({"id": element});
+        });
+        newForm = {"roleLists": selectRole}
+        Object.assign(this.operateFrom, newForm)
+
         createUser(this.operateFrom).then(res => {
           console.log(res.data);
           this.isShow = false;
@@ -218,6 +257,7 @@ export default {
   },
   created() {
     this.getList();
+    this.roles = this.currentRole;
   }
 };
 </script>
