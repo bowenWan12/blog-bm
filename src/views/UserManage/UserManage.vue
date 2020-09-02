@@ -172,26 +172,21 @@ export default {
     editUser(row) {
       this.operateType = "edit";
       this.operateFrom = row;
-
-       // console.log(this.roles)
-      let roleNms=[];
-      this.roles.forEach((item)=>{
-        roleNms.push(item.roleId)
-       
-      })
-      //  console.log(roleNms)
-      this.operateFrom.roles=roleNms;
-      this.operateFrom.locked = this.operateFrom.locked === "正常" ? false : true;
-      console.log(this.operateFrom);
-
-
       this.isShow = true;
       
     },
     confirm() {
       if (this.operateType === "edit") {
-        console.log("edit----")
-        
+        console.log("edit----")     
+
+      let roleNms=[];
+      this.roles.forEach((item)=>{
+        roleNms.push(item.roleId)
+       
+      })
+      this.operateFrom.roles=roleNms;
+      this.operateFrom.locked = this.operateFrom.locked === "正常" ? false : true;
+
         var newForm ={};
         var selectRole = [];
         
