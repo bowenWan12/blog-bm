@@ -27,8 +27,10 @@
         ></el-option>
       </el-select>
       <el-switch
-        v-model="form[item.model]"
         v-if="item.type === 'switch'"
+        v-model="form[item.model]"
+        :active-value="item.activeValue"
+        :inactive-value="item.inactiveValue"
       ></el-switch>
       <el-date-picker
         v-model="form[item.model]"

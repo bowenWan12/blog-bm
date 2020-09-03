@@ -1,21 +1,16 @@
 <template>
   <div class="manage">
-    <el-dialog
-      :title="operateType === 'add' ? '新增用户' : '更新用户'"
-      :visible.sync="isShow"
-    >
-      <common-from :formLabel="operateLabel" :form="operateFrom"> </common-from>
+    <el-dialog :title="operateType === 'add' ? '新增用户' : '更新用户'" :visible.sync="isShow">
+      <common-from :formLabel="operateLabel" :form="operateForm"></common-from>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="isShow = false">取 消</el-button>
+        <el-button @click="cancle">取 消</el-button>
         <el-button type="primary" @click="confirm">确 定</el-button>
       </div>
     </el-dialog>
     <div class="manage-header">
       <el-button type="primary" @click="addUser">+ 新增</el-button>
       <common-from inline :formLabel="formLabel" :form="searchFrom">
-        <el-button type="primary" @click="getList(searchFrom.keyword)"
-          >搜索</el-button
-        >
+        <el-button type="primary" @click="getList(searchFrom.keyword)">搜索</el-button>
       </common-from>
     </div>
     <common-table
@@ -23,18 +18,17 @@
       :tableLabel="tableLabel"
       :config="config"
       @changePage="getList"
-      @edit="editUser"
+      @edit="editUserRow"
       @del="delUser"
     ></common-table>
   </div>
-
 </template>
 
 <script>
 import { mapState } from "vuex";
 import CommonFrom from "../../components/CommonFrom";
 import CommonTable from "../../components/CommonTable";
-import { getUserList, createUser, editUser } from "@/api/user";
+import { getUserList, createUser, editUser, deleteUser } from "@/api/user";
 export default {
   components: {
     CommonFrom,
@@ -50,7 +44,8 @@ export default {
       operateType: "add",
       isShow: false,
       tableData: [],
-      roles: null,
+      roles: [],
+      editParam: {},
       tableLabel: [
         {
           prop: "loginName",
@@ -69,7 +64,7 @@ export default {
           label: "联系方式"
         },
         {
-          prop: "locked",
+          prop: "delFlag",
           label: "状态"
         },
         {
@@ -83,13 +78,13 @@ export default {
         total: 30,
         loading: false
       },
-      operateFrom: {
+      operateForm: {
         loginName: "",
         nickName: "",
         roles: [],
         email: "",
         tel: "",
-        delFlag:false
+        delFlag: false
       },
       operateLabel: [
         {
@@ -126,7 +121,9 @@ export default {
         {
           model: "delFlag",
           label: "是否启用",
-          type: "switch"
+          type: "switch",
+          activeValue: "停用",
+          inactiveValue: "正常"
         }
       ],
       searchFrom: {
@@ -142,83 +139,114 @@ export default {
     };
   },
   methods: {
-    getList(name = '') {
+    getList(name = "") {
       this.config.loading = true;
       let that = this;
       let pageParam = this.config;
-      
-      getUserList(pageParam, name).then(res =>{
-        that.tableData = res.data.records.map(item => {
-          item.locked = item.locked === false ? "正常" : "停用";
-          return item;
-        });
-        this.config.total = res.data.total;
-        this.config.loading = false;
-      }).catch(err => {
-          if (err !== 'err') {
-            that.$message({type: 'error', message: '用户列表加载失败!', showClose: true})
-          }
-        }).finally(() => {
-          this.config.loading = false
+
+      getUserList(pageParam, name)
+        .then(res => {
+          that.tableData = res.data.records.map(item => {
+            item.delFlag = item.delFlag === false ? "正常" : "停用";
+            return item;
+          });
+          that.config.total = res.data.total;
+          that.config.loading = false;
         })
+        .catch(err => {
+          if (err !== "err") {
+            that.$message({
+              type: "error",
+              message: "用户列表加载失败!",
+              showClose: true
+            });
+          }
+        })
+        .finally(() => {
+          that.config.loading = false;
+        });
     },
 
-
     addUser() {
-      this.operateForm = {};
+      this.operateForm = {
+        loginName: "",
+        nickName: "",
+        roles: [],
+        email: "",
+        tel: "",
+        delFlag: false
+      };
       this.operateType = "add";
       this.isShow = true;
     },
-    editUser(row) {
+    editUserRow(row) {
+      // console.log(JSON.stringify(row));
+      let rowStr = JSON.stringify(row)
+      let jsonRow = JSON.parse(rowStr)
+      // this.operateForm = row;
+      this.operateForm = {
+        loginName: "",
+        nickName: "",
+        roles: [],
+        email: "",
+        tel: "",
+        delFlag: false
+      };
+
+      Object.keys(this.operateForm).forEach(key => { 
+        this.operateForm[key] = jsonRow[key];
+      });
+
+      this.operateForm.roles=[];
       this.operateType = "edit";
-      this.operateFrom = row;
-      this.isShow = true;
+
+      this.editParam.id=jsonRow.id;
       
+
+      // console.log("=======================================");
+      // console.log(this.operateForm);
+      this.isShow = true;
     },
     confirm() {
+      this.operateForm.delFlag = this.operateForm.delFlag === "正常" ? false : true;
+      let newForm = {};
+      let selectRole = [];
+      this.operateForm.roles.forEach(element => {
+        selectRole.push({ id: element });
+      });
+      newForm = { roleLists: selectRole };
+      Object.assign(this.operateForm, newForm);
+
       if (this.operateType === "edit") {
-        console.log("edit----")     
+        console.log("edit----");
 
-      let roleNms=[];
-      this.roles.forEach((item)=>{
-        roleNms.push(item.roleId)
-       
-      })
-      this.operateFrom.roles=roleNms;
-      this.operateFrom.locked = this.operateFrom.locked === "正常" ? false : true;
+        //
+        Object.assign(this.operateForm, this.editParam);
 
-        var newForm ={};
-        var selectRole = [];
-        
-        this.operateFrom.roles.forEach(element => {
-          selectRole.push({"id": element});
-        });
-        newForm = {"roleLists": selectRole}
-        Object.assign(this.operateFrom, newForm)
-
-        editUser(this.operateFrom).then(res => {
-
+        editUser(this.operateForm).then(res => {
           this.isShow = false;
           this.getList();
-          this.$store.commit("setUserRole", res.data.userRole);
+          // this.$store.commit("setUserRole", res.data.userRole);
         });
       } else {
-        console.log("add----")
-        var newForm ={};
-        var selectRole = [];
-        
-        this.operateFrom.roles.forEach(element => {
-          selectRole.push({"id": element});
-        });
-        newForm = {"roleLists": selectRole}
-        Object.assign(this.operateFrom, newForm)
-
-        createUser(this.operateFrom).then(res => {
+        console.log("add----");
+        createUser(this.operateForm).then(res => {
           console.log(res.data);
           this.isShow = false;
           this.getList();
         });
       }
+    },
+    cancle() {
+      this.isShow = false;
+      this.operateForm = {
+        loginName: "",
+        nickName: "",
+        roles: [],
+        email: "",
+        tel: "",
+        delFlag: false
+      };
     },
     delUser(row) {
       this.$confirm("此操作将永久删除该用户, 是否继续?", "提示", {
@@ -228,12 +256,10 @@ export default {
       })
         .then(() => {
           let id = row.id;
-          this.$http
-            .get("/api/user/del", {
-              params: {
+         deleteUser({
                 id
               }
-            })
+            )
             .then(res => {
               console.log(res.data);
               this.$message({

@@ -13,7 +13,6 @@ export function getUserList(pageParam,name) {
 }
 export function createUser(formdata) {
   return request({
-    // headers: {'Content-Type': 'multipart/form-data'},
     url: `/admin/system/user/add`,
     method: "post",
     data: formdata
@@ -21,8 +20,15 @@ export function createUser(formdata) {
 }
 export function editUser(formdata) {
   return request({
-    // headers: {'Content-Type': 'multipart/form-data'},
     url: `/admin/system/user/edit`,
+    method: "post",
+    data: formdata
+  });
+}
+export function deleteUser(formdata) {
+  return request({
+    headers: {'Content-Type': 'application/x-www-form-urlencoded '},
+    url: `/admin/system/user/delete`,
     method: "post",
     data: formdata
   });
