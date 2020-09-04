@@ -27,7 +27,7 @@ export function editUser(formdata) {
 }
 export function deleteUser(formdata) {
   return request({
-    headers: {'Content-Type': 'application/x-www-form-urlencoded '},
+    // headers: {'Content-Type': 'application/x-www-form-urlencoded '},
     url: `/admin/system/user/delete`,
     method: "post",
     data: formdata

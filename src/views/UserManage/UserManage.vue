@@ -256,12 +256,9 @@ export default {
       })
         .then(() => {
           let id = row.id;
-         deleteUser({
-                id
-              }
-            )
+         deleteUser({"id":id})
             .then(res => {
-              console.log(res.data);
+              // console.log(res.data);
               this.$message({
                 type: "success",
                 message: "删除成功!"
