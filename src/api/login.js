@@ -19,12 +19,12 @@ export function refreshCode() {
     method: "get"
   });
 }
-// export function logout() {
-//   return request({
-//     url: '/logout',
-//     method: 'get'
-//   })
-// }
+export function logout() {
+  return request({
+    url: '/logout',
+    method: 'get'
+  })
+}
 
 // export function getUserInfo() {
 //   return request({

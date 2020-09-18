@@ -144,7 +144,8 @@ export default {
             that.userForm.rememberMe
           )
             .then(res => {
-              // console.log(res)
+              console.log("------------------------------------------------------------------------")
+              console.log(res)
               if (res.code === 0) {
                 console.log("succ");
                 that.$store.commit("clearMenu");

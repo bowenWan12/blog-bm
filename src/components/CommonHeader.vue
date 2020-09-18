@@ -49,12 +49,26 @@ export default {
       this.$store.commit("collapseMenu");
     },
     logOut() {
+
+
+      
       this.$store.commit("clearToken");
       this.$store.commit("clearMenu");
       this.$store.commit("clearUserRole");
+
+      // let that = this
+      // this.$store.dispatch('logout').then(() => {
+      //   this.$router.push({path: '/login/login'})
+      // }).catch((error) => {
+      //   if (error !== 'error') {
+      //     that.$message({message: error, type: 'error', showClose: true});
+      //   }
+      // })
+
       location.reload();
     }
   }
+  
 };
 </script>
 
